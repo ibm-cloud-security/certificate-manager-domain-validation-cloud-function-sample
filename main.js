@@ -3,14 +3,14 @@ const request = promisify(require('request'));
 const jwtVerify = promisify(require('jsonwebtoken').verify);
 const jwtDecode = require('jsonwebtoken').decode;
 
-//The CIS instance CRN.
+//The CIS instance CRN  TODO use the correct internet service crn.
 const cisCrn = 'crn:v1:bluemix:public:internet-svcs:global:a/<YOUR_ACCOUNT_ID>:<YOUR_INSTANCE_ID>';
 
 //The base CIS url.
 const baseCisUrl = `https://api.cis.cloud.ibm.com/v1/${encodeURIComponent(cisCrn)}`;
 
-//The certificate manager service API url.
-const certificateManagerApiUrl = 'https://us-south.certificate-manager.cloud.ibm.com';
+//The certificate manager service API url. TODO use the correct url according to the region of your instance.
+const certificateManagerApiUrl = 'https://<YOUR_INSTANCE_REGION>.certificate-manager.cloud.ibm.com';
 
 //The IAM token url to obtain access token for CIS.
 const iamTokenUrl = 'https://iam.cloud.ibm.com/identity/token';
