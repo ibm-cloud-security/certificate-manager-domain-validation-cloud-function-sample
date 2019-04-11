@@ -13,9 +13,14 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
 ### IBM Cloud Function action
 1. Create a new [IBM Cloud Function action](https://console.bluemix.net/docs/openwhisk/index.html#openwhisk_start_hello_world)
 2. [Bind parameters to the action](https://console.bluemix.net/docs/openwhisk/parameters.html#default-params-action) 
-    1. `iamApiKey` - API key with `write` permissions for accessing IBM Cloud Internet Services 
-    2. `instanceCrnWhiteList`  - JSON Object of the allowed Certificate Manager  instances to invoke this function.
+    1. `iamApiKey` - API key with `write` permissions for accessing IBM Cloud Internet Services
+    
+        * Create an API key in your IBM Cloud account -> Manage -> Access (IAM) -> IBM Cloud API keys
+    2. `instanceCrnWhiteList`  - JSON Object of the allowed Certificate Manager instances to invoke this function.
         E.g. `{"CRN1":true,"CRN2":true}` 
+        
+        * Find your instance CRN from the Notifications side bar menu -> Settings tab
+        * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value.
 
 ### IBM Cloud Certificate Manager
 1. [Setup a Callback channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
