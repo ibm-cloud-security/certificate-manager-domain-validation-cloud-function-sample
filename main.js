@@ -266,7 +266,7 @@ async function main(params) {
         const body = jwtDecode(params.data);
 
         //Validate against the instance CRN white list -  white list is mandatory for executing the function..
-        if (!params.instanceCrnWhiteList || !params.instanceCrnWhiteList[body.instance_crn]) {
+        if (!params.allowedCertificateManagerCRNs || !params.allowedCertificateManagerCRNs[body.instance_crn]) {
             console.error(`Demo: CRN ${body.instance_crn} is not in the white list`);
             return Promise.reject({
                 statusCode: 403,

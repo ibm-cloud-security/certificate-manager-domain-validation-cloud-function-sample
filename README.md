@@ -16,7 +16,7 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
     1. `iamApiKey` - an API key with `manager` role on the specific domain on CIS for the `Reliability` functional scope.
     
         * Create an API key in your IBM Cloud account -> Manage -> Access (IAM) -> IBM Cloud API keys
-    2. `instanceCrnWhiteList`  - a JSON Object containing a list of allowed Certificate Manager instances to invoke this function.
+    2. `allowedCertificateManagerCRNs`  - a JSON Object containing a list of allowed Certificate Manager instances to invoke this function.
         E.g. `{"CRN1":true,"CRN2":true}` 
         
         * Find your Certificate Manager instance CRN from the Notifications side bar menu -> Settings tab
