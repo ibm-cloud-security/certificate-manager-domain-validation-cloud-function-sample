@@ -42,10 +42,10 @@ In **main.js**:
 **Q: Which response code should be returned from the domain validation cloud function?**  
 **A:** Any response code that is not **200** means that the domain validation has failed.
 
-**Q: For how long will `Certificate Manager` try to validate the domain?**  
+**Q: For how long will Certificate Manager try to validate the domain?**  
 **A:** After sending the domain validation challenge, Certificate Manager will try to validate the domain for up to 10 minutes.
 
-**Q: How do I check the certificate order status, using the `Certificate Manager` public API?**  
+**Q: How do I check the certificate order status, using the Certificate Manager public API?**  
 **A:** Use the `Get certificate metadata` API to poll the certificate order status.
 
 **Q: Can I be notified once my order is complete?**  
