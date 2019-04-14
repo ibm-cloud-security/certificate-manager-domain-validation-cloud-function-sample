@@ -20,7 +20,7 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
         E.g. `{"CRN1":true,"CRN2":true}` 
         
         * Find your instance CRN from the Notifications side bar menu -> Settings tab
-        * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value.
+        * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value
 
 ### IBM Cloud Certificate Manager
 1. [Setup a Callback channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
