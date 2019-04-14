@@ -36,18 +36,24 @@ In **main.js**:
 2. Wait for the certificate to be in "Valid" state
 
 ## Q&A
-* Orders status is in `pending` state for a long time.
-    -  On slow DNS network order can take up to about 20 minutes to complete successfully.
-* Which response code should be returned from the cloud function?
-    -  Certificate Manager order will fail in case the response for the domain validation challenge notification is not 200 OK.
-* For how long `Certificate Manager` will try to validate the domain?
-    -  After sending the domain validation challenge, Certificate Manager will try to validate the domain for up to 10 minutes.
-* How to check the certificate order status, using the `Certificate Manager` public API?
-    -  User can poll the cert metadata api to check the certificate order status
-* Can i get notified once the order is completed?
-    -  User can configure a slack notification channel to get notified when an ordered certificate was issued, or order failed
-* In case of a failure during the order. How to identify the cause of the failure?
-    -  Order failure notification will include a code and a message.
-* How to troubleshoot errors in the cloud function execution?
-    -  In case of order failure user should check his cloud function log for errors.
+**Q: My order status is in `pending` state for a long time** 
+**A:** On slow DNS networks an order may take up to about 20 minutes to complete successfully.
+
+**Q: Which response code should be returned from the domain validation cloud function?**  
+**A:** Any response code that is not **200** means that the domain validation has failed.
+
+**Q: For how long will `Certificate Manager` try to validate the domain?**  
+**A:** After sending the domain validation challenge, Certificate Manager will try to validate the domain for up to 10 minutes.
+
+**Q: How do I check the certificate order status, using the `Certificate Manager` public API?**  
+**A:** Use the `Get certificate metadata` API to poll the certificate order status.
+
+**Q: Can I be notified once my order is complete?**  
+**A:** You can [configure a Slack notification channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#configuring-notifications) to be notified when an ordered certificate has been issued failed.
+
+**Q: In case of a failure during the order, How can I identify the cause of the failure?**  
+**A:** Order failure notification will include an error code and a message.
+
+**Q: How can I troubleshoot errors in the cloud function execution?**  
+**A:** You can review the Cloud Function log to review any errors during execution.
 
