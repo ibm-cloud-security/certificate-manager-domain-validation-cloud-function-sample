@@ -35,7 +35,19 @@ In **main.js**:
 1. [Order a Lets Encrypt certificate](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-managing-certificates-from-the-dashboard#importing-a-certificate) using the Certificate Manager order form
 2. Wait for the certificate to be in "Valid" state
 
-
-
-
+## Q&A
+* Orders status is in `pending` state for a long time.
+    -  On slow DNS network order can take up to about 20 minutes to complete successfully.
+* Which response code should be returned from the cloud function?
+    -  Certificate Manager order will fail in case the response for the domain validation challenge notification is not 200 OK.
+* For how long `Certificate Manager` will try to validate the domain?
+    -  After sending the domain validation challenge, Certificate Manager will try to validate the domain for up to 10 minutes.
+* How to check the certificate order status, using the `Certificate Manager` public API?
+    -  User can poll the cert metadata api to check the certificate order status
+* Can i get notified once the order is completed?
+    -  User can configure a slack notification channel to get notified when an ordered certificate was issued, or order failed
+* In case of a failure during the order. How to identify the cause of the failure?
+    -  Order failure notification will include a code and a message.
+* How to troubleshoot errors in the cloud function execution?
+    -  In case of order failure user should check his cloud function log for errors.
 
