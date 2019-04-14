@@ -6,8 +6,8 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
 
 ## Prerequisites
  
-1. Create a new instance of [IBM Cloud Certificate Manager.](https://console.bluemix.net/catalog/services/certificate-manager)
-2. Create a new instance of [IBM Cloud Internet Services.](https://www.ibm.com/cloud/cloud-internet-services) 
+1. Create a new instance of [IBM Cloud Certificate Manager](https://console.bluemix.net/catalog/services/certificate-manager)
+2. Create a new instance of [IBM Cloud Internet Services](https://www.ibm.com/cloud/cloud-internet-services) 
 
 ## Configuration
 ### IBM Cloud Function action
