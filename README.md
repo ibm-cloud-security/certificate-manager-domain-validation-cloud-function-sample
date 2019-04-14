@@ -6,8 +6,8 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
 
 ## Prerequisites
  
-1. An instance of [IBM Cloud Certificate Manager.](https://cloud.ibm.com/catalog/services/certificate-manager)
-2. An instance of [IBM Cloud Internet Services.](https://cloud.ibm.com/catalog/services/internet-services) with a configured domain
+1. An instance of [IBM Cloud Certificate Manager.](https://cloud.ibm.com/docs/services/certificate-manager)
+2. An instance of [IBM Cloud Internet Services.](https://cloud.ibm.com/docs/infrastructure/cis) with a configured domain
 
 ## Configuration
 ### IBM Cloud Function action
