@@ -1,4 +1,4 @@
-# Domain Validation sample
+# Certificate Order - DNS Domain Validation sample
 ## General
 This repository contains sample code for implementing custom domain validation when ordering a TLS certificate from IBM Cloud Certificate Manager for a domain registered in IBM Cloud Internet Services.  
 
@@ -23,12 +23,12 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
         * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value.
 
 ### IBM Cloud Certificate Manager
-1. [Setup a Notifications channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
+1. Setup a Callback URL [Notification Channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
 
 ### Modify and deploy the sample
 In **main.js**:
-1. Update `cisCrn` parameter with the CIS CRN value
-2. Update `certificateManagerApiUrl` according to the region of your Certificate Manager service instance. Can be one of `us-south`, `eu-gb`, `eu-de`, `jp-tok`
+1. Update the `cisCrn` parameter with your CIS instance CRN value
+2. Update the `certificateManagerApiUrl` parameter with your Certificate Manager service instance region value. Can be one of: `us-south`, `eu-gb`, `eu-de`, `jp-tok`
 3. Deploy the code to your IBM Cloud Function action
  
 ## Test
