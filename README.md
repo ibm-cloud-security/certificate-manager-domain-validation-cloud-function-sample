@@ -23,17 +23,17 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
         * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value
 
 ### IBM Cloud Certificate Manager
-1. [Setup a Callback channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
+[Setup a Callback channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
 
 ### Modify and deploy the sample
 In **main.js**:
-1. Update `cisCrn` parameter with the CIS CRN value.
-2. Update `certificateManagerApiUrl` according to the region of your Certificate Manager service instance. Can be one of `us-south`, `eu-gb`, `eu-de`, `jp-tok`.
+1. Update `cisCrn` parameter with the CIS CRN value
+2. Update `certificateManagerApiUrl` according to the region of your Certificate Manager service instance. Can be one of `us-south`, `eu-gb`, `eu-de`, `jp-tok`
 3. Deploy the code to your IBM Cloud Function action
  
-### Test
-1. [Order a certificate](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-managing-certificates-from-the-dashboard#importing-a-certificate).
-2. Wait for the certificate to be in "Valid" state.
+## Test
+1. [Order a Lets Encrypt certificate](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-managing-certificates-from-the-dashboard#importing-a-certificate) using the Certificate Manager order form
+2. Wait for the certificate to be in "Valid" state
 
 
 
