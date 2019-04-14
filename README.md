@@ -1,29 +1,29 @@
 # Domain Validation sample
 ## General
-This repository contains sample code for implementing domain validation.  
+This repository contains sample code for implementing custom domain validation when ordering a TLS certificate from IBM Cloud Certificate Manager for a domain registered in IBM Cloud Internet Services.  
 
-The sample demonstrates how to implement an [IBM Cloud function action](https://console.bluemix.net/openwhisk/) that inserts and deletes a `TXT` record to an IBM Cloud Internet Services instance.
+The sample demonstrates how to implement an [IBM Cloud function action](https://cloud.ibm.com/openwhisk) that adds a `DNS TXT` record to an IBM Cloud Internet Services instance domain when a notification containing a `DNS` challenge arrives, and later removes that `TXT` record when a notification about domain validation completion arrives.
 
 ## Prerequisites
  
-1. Create a new instance of [IBM Cloud Certificate Manager.](https://console.bluemix.net/catalog/services/certificate-manager)
-2. Create a new instance of [IBM Cloud Internet Services.](https://www.ibm.com/cloud/cloud-internet-services) 
+1. An instance of [IBM Cloud Certificate Manager.](https://cloud.ibm.com/catalog/services/certificate-manager)
+2. An instance of [IBM Cloud Internet Services.](https://cloud.ibm.com/catalog/services/internet-services) with a configured domain
 
 ## Configuration
 ### IBM Cloud Function action
-1. Create a new [IBM Cloud Function action](https://console.bluemix.net/docs/openwhisk/index.html#openwhisk_start_hello_world)
-2. [Bind parameters to the action](https://console.bluemix.net/docs/openwhisk/parameters.html#default-params-action) 
-    1. `iamApiKey` - API key with `write` permissions for accessing IBM Cloud Internet Services
+1. Create a new [IBM Cloud Function action](https://cloud.ibm.com/docs/openwhisk/index.html#openwhisk_start_hello_world)
+2. [Bind parameters to the action](https://cloud.ibm.com/docs/openwhisk/parameters.html#default-params-action) 
+    1. `iamApiKey` - an API key with `manager` role on the specific domain on CIS for the `Reliability` functional scope.
     
         * Create an API key in your IBM Cloud account -> Manage -> Access (IAM) -> IBM Cloud API keys
-    2. `instanceCrnWhiteList`  - JSON Object of the allowed Certificate Manager instances to invoke this function.
+    2. `instanceCrnWhiteList`  - a JSON Object containing a list of allowed Certificate Manager instances to invoke this function.
         E.g. `{"CRN1":true,"CRN2":true}` 
         
-        * Find your instance CRN from the Notifications side bar menu -> Settings tab
+        * Find your Certificate Manager instance CRN from the Notifications side bar menu -> Settings tab
         * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value.
 
 ### IBM Cloud Certificate Manager
-1. [Setup a Callback channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
+1. [Setup a Notifications channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
 
 ### Modify and deploy the sample
 In **main.js**:
