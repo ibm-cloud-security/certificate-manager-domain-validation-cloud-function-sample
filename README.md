@@ -6,8 +6,8 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
 
 ## Prerequisites
  
-1. An instance of [IBM Cloud Certificate Manager.](https://cloud.ibm.com/catalog/services/certificate-manager)
-2. An instance of [IBM Cloud Internet Services.](https://cloud.ibm.com/catalog/services/internet-services) with a configured domain
+1. Create a new instance of [IBM Cloud Certificate Manager.](https://cloud.ibm.com/catalog/services/certificate-manager)
+2. Create a new instance of [IBM Cloud Internet Services.](https://cloud.ibm.com/catalog/services/internet-services) with a configured domain
 
 ## Configuration
 ### IBM Cloud Function action
@@ -27,13 +27,13 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
 
 ### Modify and deploy the sample
 In **main.js**:
-1. Update `cisCrn` parameter with the CIS CRN value.
-2. Update `certificateManagerApiUrl` according to the region of your Certificate Manager service instance. Can be one of `us-south`, `eu-gb`, `eu-de`, `jp-tok`.
+1. Update `cisCrn` parameter with the CIS CRN value
+2. Update `certificateManagerApiUrl` according to the region of your Certificate Manager service instance. Can be one of `us-south`, `eu-gb`, `eu-de`, `jp-tok`
 3. Deploy the code to your IBM Cloud Function action
  
-### Test
-1. [Order a certificate](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-managing-certificates-from-the-dashboard#importing-a-certificate).
-2. Wait for the certificate to be in "Valid" state.
+## Test
+1. [Order a Lets Encrypt certificate](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-managing-certificates-from-the-dashboard#importing-a-certificate) using the Certificate Manager order form
+2. Wait for the certificate to be in "Valid" state
 
 
 
