@@ -1,4 +1,4 @@
-# Domain Validation sample
+# Certificate Order - DNS Domain Validation sample
 ## General
 This repository contains sample code for implementing custom domain validation when ordering a TLS certificate from IBM Cloud Certificate Manager for a domain registered in IBM Cloud Internet Services.  
 
