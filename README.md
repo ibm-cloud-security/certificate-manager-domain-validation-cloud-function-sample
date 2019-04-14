@@ -27,8 +27,8 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
 
 ### Modify and deploy the sample
 In **main.js**:
-1. Update `cisCrn` parameter with the CIS CRN value
-2. Update `certificateManagerApiUrl` according to the region of your Certificate Manager service instance. Can be one of `us-south`, `eu-gb`, `eu-de`, `jp-tok`
+1. Update the `cisCrn` parameter with your CIS instance CRN value
+2. Update the `certificateManagerApiUrl` with your Certificate Manager service instance region value. Can be one of: `us-south`, `eu-gb`, `eu-de`, `jp-tok`
 3. Deploy the code to your IBM Cloud Function action
  
 ## Test
