@@ -1,8 +1,13 @@
 # Certificate Order - DNS Domain Validation sample
 ## General
-This repository contains sample code for implementing domain validation when ordering a TLS certificate from IBM Cloud Certificate Manager for a domain registered in IBM Cloud Internet Services.  
+IBM Cloud Certificate Manager lets you order a TLS certificate signed by Let’s Encrypt. When you order a certificate, you have to prove that you own the domains for which you are requesting a certificate. This repository contains sample code to show you how to prove you own these domains.
 
-The sample demonstrates how to implement an [IBM Cloud function action](https://cloud.ibm.com/openwhisk) that adds a `DNS TXT` record to an IBM Cloud Internet Services instance domain when a notification containing a `DNS` challenge arrives, and later removes that `TXT` record when a notification about domain validation completion arrives.
+The sample demonstrates how to implement an IBM Cloud Function action that receives a domain validation challenge from Certificate Manager, and answers this challenge. 
+
+
+When you order a certificate from Certificate Manager, the Cloud Function action receives a notification from Certificate Manager containing a DNS txt record challenge, and then adds this to the DNS provider where the requested domain is registered. Once the domain validation challenge is answered, the Cloud Function also clears this TXT record from the DNS service.
+
+In this sample we used IBM Cloud Internet Services as our DNS provider, where we registered our domains, but you can use this sample with any other DNS provider that offers an API for updating TXT records.
 
 ## Prerequisites
  
@@ -16,7 +21,8 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
     1. `iamApiKey` - an API key with `manager` role on the specific domain on CIS for the `Reliability` functional scope.
     
         * Create an API key in your IBM Cloud account -> Manage -> Access (IAM) -> IBM Cloud API keys
-    2. `allowedCertificateManagerCRNs`  - a JSON Object containing a list of Certificate Manager instances that are allowed to invoke this function.
+    2. `allowedCertificateManagerCRNs` - a JSON Object containing a list of Certificate Manager instances that are allowed to invoke this function.
+        Apply it in order to protect your cloud function public api from being invoked by unauthorized clients.  
         E.g. `{"CRN1":true,"CRN2":true}` 
         
         * Find your Certificate Manager instance CRN from the Notifications side bar menu -> Settings tab
