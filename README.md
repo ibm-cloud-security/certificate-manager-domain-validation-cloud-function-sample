@@ -23,7 +23,7 @@ The sample demonstrates how to implement an [IBM Cloud function action](https://
         * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value.
 
 ### IBM Cloud Certificate Manager
-1. [Setup a Notifications channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
+1. Setup a Callback URL [Notification Channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
 
 ### Modify and deploy the sample
 In **main.js**:
