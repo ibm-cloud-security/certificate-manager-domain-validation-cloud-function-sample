@@ -36,7 +36,7 @@ In **main.js**:
 2. Wait for the certificate to be in "Valid" state
 
 ## Q&A
-**Q: My order status is in `pending` state for a long time** 
+**Q: My order status is in `pending` state for a long time**   
 **A:** On slow DNS networks an order may take up to about 20 minutes to complete successfully.
 
 **Q: Which response code should be returned from the domain validation cloud function?**  
