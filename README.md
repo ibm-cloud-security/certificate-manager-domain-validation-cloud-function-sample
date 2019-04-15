@@ -36,6 +36,45 @@ In **main.js**:
 2. Update the `certificateManagerApiUrl` parameter with your Certificate Manager service instance region value. Can be one of: `us-south`, `eu-gb`, `eu-de`, `jp-tok`
 3. Deploy the code to your IBM Cloud Function action
  
+ ### Payload structure
+ 
+When ordering a certificate, Certificate Manager will send a request to the cloud function 2 times with the following payload:
+
+1. **Domain Validation Required**
+     ```
+    {
+           instance_crn: 'INSTANCE_CRN',
+           certificate_manager_url: 'certificate_manager_url',
+           event_type: 'cert_domain_validation_required',
+           userToken: 'USER_TOKEN',
+           certificateCRN: 'CERTIFICATE_CRN',
+           domain_validation_method: 'dns-01',
+           domain: 'example.com',
+           challenge: {
+               txt_record_name: '_acme-challenge',
+               txt_record_val: 'TXT_RECORD_VALUE'
+           },
+           version: 4
+       }
+      ```
+ 2. **Domain Validation Completed**
+      ```
+     {
+            instance_crn: 'INSTANCE_CRN',
+            certificate_manager_url: 'certificate_manager_url',
+            event_type: 'cert_domain_validation_completed',
+            userToken: 'USER_TOKEN',
+            certificateCRN: 'CERTIFICATE_CRN',
+            domain_validation_method: 'dns-01',
+            domain: 'example.com',
+            challenge: {
+                txt_record_name: '_acme-challenge',
+                txt_record_val: 'TXT_RECORD_VALUE'
+            },
+            version: 4
+        }
+       ```
+ 
 ## Order certificate
 1. [Order a Lets Encrypt certificate](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-managing-certificates-from-the-dashboard#importing-a-certificate) using the Certificate Manager console
 2. Certificate Manger will send a notification to your cloud function with domain validation challenge to prove that you control the domain. Once the challenge is validated, Certificate Manager will send a second notification with Let's Encrypt domain validation challenges. 
