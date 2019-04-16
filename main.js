@@ -10,7 +10,11 @@ const cisCrn = 'crn:v1:bluemix:public:internet-svcs:global:a/<YOUR_ACCOUNT_ID>:<
 const baseCisUrl = `https://api.cis.cloud.ibm.com/v1/${encodeURIComponent(cisCrn)}`;
 
 //The certificate manager service API url. TODO use the correct url according to the region of your instance.
-const certificateManagerApiUrl = 'https://<YOUR_INSTANCE_REGION>.certificate-manager.cloud.ibm.com';
+//const certificateManagerApiUrl = 'https://<YOUR_INSTANCE_REGION>.certificate-manager.cloud.ibm.com';
+
+
+//Pointing to pre-production API.
+const certificateManagerApiUrl = 'https://us-south.certificate-manager.test.cloud.ibm.com';
 
 //The IAM token url to obtain access token for CIS.
 const iamTokenUrl = 'https://iam.cloud.ibm.com/identity/token';
