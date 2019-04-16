@@ -76,8 +76,11 @@ When ordering a certificate, Certificate Manager will send a request to the clou
        ```
  
 ## Order certificate
-1. [Order a Lets Encrypt certificate](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-managing-certificates-from-the-dashboard#importing-a-certificate) using the Certificate Manager console
-2. Certificate Manger will send a notification to your cloud function with domain validation challenge to prove that you control the domain. Once the challenge is validated, Certificate Manager will send a second notification with Let's Encrypt domain validation challenges. 
+1. [Order a Lets Encrypt certificate](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-order-certificates) using the Certificate Manager console
+2. Certificate Manger will send a notification to your cloud function with domain validation challenge to prove that you control the domain. Once the challenge is validated, Certificate Manager will send a second notification with Let's Encrypt domain validation challenges.
+<br>
+    1. **Note:** When you [configure the callback channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in you Certificate Manager instance, make sure to [configure the target URL of the web action with the http extension](https://github.com/apache/incubator-openwhisk/blob/master/docs/apigateway.md#full-control-over-the-http-response)
+to have full control over the HTTP response code.
 3. Wait for the certificate to be issued. When the order is in process, certificate metadata will have an `issuance_info.status:pending` property. Once issued, property will be `issuance_info.status:valid`. If the order fails, property will be `issuance_info.status:failed`
 
 ## Q&A
