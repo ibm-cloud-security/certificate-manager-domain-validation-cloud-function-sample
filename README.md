@@ -104,3 +104,7 @@ When ordering a certificate, Certificate Manager will send a request to the clou
 **Q: How can I troubleshoot errors in the execution of my cloud function?**  
 **A:** You can review the Cloud Function log to find any errors that occurred during execution.
 
+**Q: I"m not receiving certificate order events in my existing Slack notification channel. Why?**<br>
+**A:** Upgrade your Slack notification channel to the latest version in the Certificate Manager `Settings` tab.
+ 
+
