@@ -3,15 +3,6 @@ const request = promisify(require('request'));
 const jwtVerify = promisify(require('jsonwebtoken').verify);
 const jwtDecode = require('jsonwebtoken').decode;
 
-//The CIS instance CRN  TODO use the correct internet service crn.
-const cisCrn = 'crn:v1:bluemix:public:internet-svcs:global:a/<YOUR_ACCOUNT_ID>:<YOUR_INSTANCE_ID>';
-
-//The base CIS url.
-const baseCisUrl = `https://api.cis.cloud.ibm.com/v1/${encodeURIComponent(cisCrn)}`;
-
-//The certificate manager service API url. TODO use the correct url according to the region of your instance.
-const certificateManagerApiUrl = 'https://<YOUR_INSTANCE_REGION>.certificate-manager.cloud.ibm.com';
-
 //The IAM token url to obtain access token for CIS.
 const iamTokenUrl = 'https://iam.cloud.ibm.com/identity/token';
 
@@ -20,7 +11,7 @@ const iamTokenUrl = 'https://iam.cloud.ibm.com/identity/token';
  * @param body
  * @returns {Promise<CryptoKey | string>}
  */
-async function getPublicKey(body) {
+async function getPublicKey(body, certificateManagerApiUrl) {
 
     const keysOptions = {
         method: 'GET',
@@ -45,7 +36,7 @@ async function getPublicKey(body) {
  * @param iamApiKey
  * @returns {Promise<void>}
  */
-async function setChallenge(payload, iamApiKey) {
+async function setChallenge(payload, iamApiKey, baseCisUrl) {
 
     console.log(`Set challenge: '${payload.domain} : ${JSON.stringify(payload.challenge)}`);
 
@@ -70,7 +61,7 @@ async function setChallenge(payload, iamApiKey) {
     const token = payload.challenge.txt_record_val;
 
     //Get the the zone id and its status.
-    const zone = await getZoneId(domain, accessToken);
+    const zone = await getZoneId(domain, accessToken, baseCisUrl);
 
     //Add the challenge TXT record.
     const options = {
@@ -112,7 +103,7 @@ async function setChallenge(payload, iamApiKey) {
  * @param domain
  * @param accessToken
  */
-const getZoneId = async (domain, accessToken) => {
+const getZoneId = async (domain, accessToken, baseCisUrl) => {
 
     console.log(`Get CIS zone id for domain ${domain}`);
 
@@ -152,7 +143,7 @@ const getZoneId = async (domain, accessToken) => {
  * @param accessToken
  * @returns {Promise<*>}
  */
-async function getAcmeChallengeDNSRecordIDs(domain, zoneId, accessToken) {
+async function getAcmeChallengeDNSRecordIDs(domain, zoneId, accessToken, baseCisUrl) {
 
     const options = {
         uri: `${baseCisUrl}/zones/${zoneId}/dns_records?type=TXT&name=_acme-challenge.${encodeURIComponent(domain)}`,
@@ -186,7 +177,7 @@ async function getAcmeChallengeDNSRecordIDs(domain, zoneId, accessToken) {
  * @param accessToken
  * @returns {Promise<void>}
  */
-async function deleteRecord(zone, recordId, accessToken) {
+async function deleteRecord(zone, recordId, accessToken, baseCisUrl) {
 
     const options = {
         uri: `${baseCisUrl}/zones/${zone.id}/dns_records/${recordId}`,
@@ -218,7 +209,7 @@ async function deleteRecord(zone, recordId, accessToken) {
  * @param iamApiKey
  * @returns {Promise<[]>}
  */
-async function removeChallenge(payload, iamApiKey) {
+async function removeChallenge(payload, iamApiKey, baseCisUrl) {
 
     console.log(`Removing challenge TXT records for domain: '${payload.domain}`);
 
@@ -237,13 +228,13 @@ async function removeChallenge(payload, iamApiKey) {
 
     const accessToken = await obtainAccessToken(iamApiKey);
 
-    const zone = await getZoneId(domain, accessToken);
+    const zone = await getZoneId(domain, accessToken, baseCisUrl);
 
     //get the dns record.
-    const records = await getAcmeChallengeDNSRecordIDs(domain, zone.id, accessToken);
+    const records = await getAcmeChallengeDNSRecordIDs(domain, zone.id, accessToken, baseCisUrl);
 
     //Deleting all the acme-challenge TXT records.
-    return Promise.all(records.map(record => deleteRecord(zone, record, accessToken)));
+    return Promise.all(records.map(record => deleteRecord(zone, record, accessToken, baseCisUrl)));
 }
 
 /**
@@ -271,10 +262,18 @@ async function main(params) {
             });
         }
 
-        const publicKey = await getPublicKey(body);
+        const certificateManagerApiUrl = `https://${params.cmRegion}.certificate-manager.cloud.ibm.com`;
+
+        const publicKey = await getPublicKey(body, certificateManagerApiUrl);
         const decodedNotification = await jwtVerify(params.data, publicKey);
 
         console.log(`Notification message body: ${JSON.stringify(decodedNotification)}`);
+
+        //The CIS instance CRN  TODO use the correct internet service crn.
+        const cisCrn = 'crn:v1:bluemix:public:internet-svcs:global:a/<YOUR_ACCOUNT_ID>:<YOUR_INSTANCE_ID>';
+
+        //The base CIS url.
+        const baseCisUrl = `https://api.cis.cloud.ibm.com/v1/${encodeURIComponent(params.cisCrn)}`;
 
         switch (decodedNotification.event_type) {
             // Handle other certificate manager event types.
@@ -282,10 +281,10 @@ async function main(params) {
 
             // Handling domain validation event types.
             case "cert_domain_validation_required":
-                await setChallenge(decodedNotification, params.iamApiKey);
+                await setChallenge(decodedNotification, params.iamApiKey, baseCisUrl);
                 break;
             case "cert_domain_validation_completed":
-                await removeChallenge(decodedNotification, params.iamApiKey);
+                await removeChallenge(decodedNotification, params.iamApiKey, baseCisUrl);
                 break;
         }
 
