@@ -17,24 +17,28 @@ In this sample we used IBM Cloud Internet Services as our DNS provider, where we
 ### IBM Cloud Function action
 1. Create a new [IBM Cloud Function action](https://cloud.ibm.com/docs/openwhisk/index.html#openwhisk_start_hello_world)
 2. [Bind parameters to the action](https://cloud.ibm.com/docs/openwhisk/parameters.html#default-params-action) 
-    1. `iamApiKey` - an API key with `manager` role on the specific domain on CIS for the `Reliability` functional scope.
-    
+    1. `iamApiKey` - an API key with `manager` role on the specific domain on CIS for the `Reliability` functional scope.  
+        E.g. `"QwErtYuIOp"`
+
         * Create an API key in your IBM Cloud account -> Manage -> Access (IAM) -> IBM Cloud API keys
     2. `allowedCertificateManagerCRNs` - a JSON Object containing a list of Certificate Manager instances that are allowed to invoke this function.
         Apply it in order to protect your cloud function from being invoked by unauthorized clients.  
-        E.g. `{"CRN1":true,"CRN2":true}` 
+        E.g. `{"crn:v1:bluemix:public:cloudcerts:us-south:a....":true,"crn:v1:bluemix:public:cloudcerts:eu-de:a...":true}` 
         
         * Find your Certificate Manager instance CRN from the Notifications side bar menu -> Settings tab
         * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value.
+    3. `cisCrn` - an API key with `manager` role on the specific domain on CIS for the `Reliability` functional scope.  
+        E.g. `"crn:v1:bluemix:public:internet-svcs:global:a...."`
 
+        * Find your Cloud Internet Services CRN on the Overview page
+    4. `cmRegion` - your Certificate Manager service instance region value. Can be one of: `us-south`, `eu-gb`, `eu-de`, `jp-tok`  
+        E.g. `"us-south"`
+    
 ### IBM Cloud Certificate Manager
 1. Setup a Callback URL [Notification Channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
 
-### Modify and deploy the sample
-In **main.js**:
-1. Update the `cisCrn` parameter with your CIS instance CRN value
-2. Update the `certificateManagerApiUrl` parameter with your Certificate Manager service instance region value. Can be one of: `us-south`, `eu-gb`, `eu-de`, `jp-tok`
-3. Deploy the code to your IBM Cloud Function action
+### Deploy the sample
+1. Deploy the code to your IBM Cloud Function action
  
  ### Payload structure
  
