@@ -27,7 +27,7 @@ In this sample we used IBM Cloud Internet Services as our DNS provider, where we
         
         * Find your Certificate Manager instance CRN from the Notifications side bar menu -> Settings tab
         * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value.
-    3. `cisCrn` - an API key with `manager` role on the specific domain on CIS for the `Reliability` functional scope.  
+    3. `cisCrn` - Cloud Internet Services instance CRN.  
         E.g. `"crn:v1:bluemix:public:internet-svcs:global:a...."`
 
         * Find your Cloud Internet Services CRN on the Overview page
