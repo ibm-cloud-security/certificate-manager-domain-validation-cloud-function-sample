@@ -1,10 +1,12 @@
 # Certificate Order - DNS Domain Validation sample
 ## General
-IBM Cloud Certificate Manager lets you order a TLS certificate signed by Let’s Encrypt. When you order a certificate, you have to prove that you own the domains for which you are requesting a certificate. This repository contains sample code to show you how to prove you own these domains.
+IBM Cloud Certificate Manager lets you order TLS certificates signed by Let’s Encrypt.
 
-The sample demonstrates how to implement an IBM Cloud Function action that receives a domain validation challenge from Certificate Manager, and answers this challenge. 
+When you order a certificate, you have to prove that you own the domains for which you are requesting the certificate for. This repository contains sample code to show you how to prove you own these domains.
 
-When you order a certificate from Certificate Manager, the Cloud Function action receives a notification from Certificate Manager containing a DNS txt record challenge, and then adds this to the DNS provider where the requested domain is registered. Once the domain validation challenge is answered, the Cloud Function also clears this TXT record from the DNS service.
+The sample demonstrates how to implement an IBM Cloud Function action that receives a domain validation challenge from Certificate Manager, and answers it.
+
+The Cloud Function action receives a notification from Certificate Manager containing a DNS TXT record challenge, and then adds this to the DNS provider where the requested domain is registered. Once the domain validation challenge is answered, the Cloud Function also clears this TXT record from the DNS service.
 
 In this sample we used IBM Cloud Internet Services as our DNS provider, where we registered our domains, but you can use this sample with any other DNS provider that offers an API for updating TXT records.
 
@@ -21,21 +23,26 @@ In this sample we used IBM Cloud Internet Services as our DNS provider, where we
         E.g. `"QwErtYuIOp"`
 
         * Create an API key in your IBM Cloud account -> Manage -> Access (IAM) -> IBM Cloud API keys
+        
     2. `allowedCertificateManagerCRNs` - a JSON Object containing a list of Certificate Manager instances that are allowed to invoke this function.
         Apply it in order to protect your cloud function from being invoked by unauthorized clients.  
         E.g. `{"crn:v1:bluemix:public:cloudcerts:us-south:a....":true,"crn:v1:bluemix:public:cloudcerts:eu-de:a...":true}` 
         
-        * Find your Certificate Manager instance CRN from the Notifications side bar menu -> Settings tab
-        * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value.
+        * Find your Certificate Manager instance CRN from the Settings side bar item
+        * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value
+        
     3. `cisCrn` - Cloud Internet Services instance CRN.  
         E.g. `"crn:v1:bluemix:public:internet-svcs:global:a...."`
 
         * Find your Cloud Internet Services CRN on the Overview page
+        
     4. `cmRegion` - your Certificate Manager service instance region value. Can be one of: `us-south`, `eu-gb`, `eu-de`, `jp-tok`  
         E.g. `"us-south"`
     
 ### IBM Cloud Certificate Manager
 1. Setup a Callback URL [Notification Channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
+
+   > **Note**: when entering the Callback URL, make sure to use the **Web Action** URL from IBM Cloud Functions -> Endpoints
 
 ### Deploy the sample
 1. Deploy the code to your IBM Cloud Function action
