@@ -115,8 +115,8 @@ When ordering a certificate, Certificate Manager will send a request to the clou
 **Q: How can I troubleshoot errors in the execution of my cloud function?**  
 **A:** You can review the Cloud Function log to find any errors that occurred during execution.
 
-**Q: I'm not receiving certificate order events in my existing Slack notification channel. Why?**<br>
+**Q: I'm not receiving certificate order events in my existing Slack notification channel. Why?**  
 **A:** Upgrade your Slack notification channel to the latest version in the Certificate Manager `Settings` tab.
  
-**Q: The following error is received: "Your Callback URL channel endpoint responded with an error"
+**Q: The following error is received: "Your Callback URL channel endpoint responded with an error"**  
 **A:** Verify that you have used the URL from IBM Cloud Functions -> Endpoints -> **Web Actions** as the value for the Callback URL in Certificate Manager.
