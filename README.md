@@ -42,11 +42,13 @@ In this sample we used IBM Cloud Internet Services as our DNS provider, where we
 ### IBM Cloud Certificate Manager
 1. Setup a Callback URL [Notification Channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
 
-   > **Note**: when entering the Callback URL, make sure to use the **Web Action** URL from IBM Cloud Functions -> Endpoints
+   > **Note**: when entering the Callback URL, make sure to use the **Web Action** URL from IBM Cloud Functions -> Endpoints and change the ".json" suffix to ".http"
 
 ### Deploy the sample
 1. Deploy the code to your IBM Cloud Function action
  
+    > **Note**: Make sure to uncheck the ["Raw HTTP handling"](https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-actions_web#actions_web_raw) checkbox in the action. (Endpoints->Web Action->Raw HTTP handling) 
+    
  ### Payload structure
  
 When ordering a certificate, Certificate Manager will send a request to the cloud function 2 times with the following payload:
