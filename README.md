@@ -40,7 +40,7 @@ In this sample we used IBM Cloud Internet Services as our DNS provider, where we
         Apply it in order to protect your cloud function from being invoked by unauthorized clients.  
         E.g. `{"crn:v1:bluemix:public:cloudcerts:us-south:a....":true,"crn:v1:bluemix:public:cloudcerts:eu-de:a...":true}` 
         
-        * Find your Certificate Manager instance CRN from the Settings side bar item
+        * Find your Certificate Manager instance CRN from the Settings sidebar item
         * Or from CLI: `ibmcloud resource service-instance [INSTANCE NAME]`, grab the `ID` value
         
     3. `cisCrn` - Cloud Internet Services instance CRN.  
