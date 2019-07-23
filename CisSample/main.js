@@ -234,7 +234,7 @@ async function removeChallenge(payload, iamApiKey, baseCisUrl) {
     const records = await getAcmeChallengeDNSRecordIDs(domain, zone.id, accessToken, baseCisUrl);
 
     //Deleting all the acme-challenge TXT records.
-    return Promise.all(records.map(record => deleteRecord(zone, record, accessToken, baseCisUrl)));
+    return Promise.all(records.map(record => deleteRecord(zone, record, accessToken, baseCisUrl).catch()));
 }
 
 /**

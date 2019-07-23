@@ -19,7 +19,6 @@ async function getPublicKey(body, certificateManagerApiUrl) {
         url: `${certificateManagerApiUrl}/api/v1/instances/${encodeURIComponent(body.instance_crn)}/notifications/publicKey?keyFormat=pem`,
         headers: {'cache-control': 'no-cache'}
     };
-
     let response;
     try {
         response = await request(keysOptions);
@@ -28,12 +27,11 @@ async function getPublicKey(body, certificateManagerApiUrl) {
         console.log(`Couldn't get the public key for instance ${body.instance_crn}. Reason is: ${getErrorString(err)}`);
         throw new Error(`Couldn't get the public key for instance ${body.instance_crn}`);
     }
-    if (response.statusCode === 200)
-        return response.body.publicKey;
-    else {
+    if (response.statusCode !== 200) {
         console.error(`Couldn't get the public key for instance ${body.instance_crn} . Reason is: status code ${response.statusCode} and body ${JSON.stringify(response.body)}`);
         throw new Error(`Couldn't get the public key for instance ${body.instance_crn}`);
     }
+    return response.body.publicKey;
 }
 
 /**
@@ -49,9 +47,8 @@ async function setChallenge(payload, userInfo) {
     domain = domain.replace('*.', '');
     let zone = await getZoneIdByDomain(domain, userInfo);
     if (!zone || !zone.id) {
-        throw `Couldn't find zone id for domain ${domain}`;
+        throw new Error(`Couldn't find zone id for domain ${domain}`);
     }
-
     const recordName = payload.challenge.txt_record_name;
     const recordValue = payload.challenge.txt_record_val;
     await addTxtRecord(zone.id, recordName, recordValue, userInfo);
@@ -63,7 +60,7 @@ async function setChallenge(payload, userInfo) {
  * @param recordName
  * @param recordValue
  * @param userInfo user credentials
- * @returns {Promise<{success: boolean}>}
+ * @returns {Promise<void>}
  */
 const addTxtRecord = async (zoneId, recordName, recordValue, userInfo) => {
     console.log(`Add TXT record "${recordValue}" to softlayer zone ${zoneId}`);
@@ -79,17 +76,13 @@ const addTxtRecord = async (zoneId, recordName, recordValue, userInfo) => {
     }
     catch (err) {
         console.log(`Couldn't add TXT record "${recordValue}" to softlayer zone ${zoneId}. Reason is: ${getErrorString(err)}`);
-        throw `Couldn't add TXT record "${recordValue}" to zone ${zoneId}`;
+        throw new Error(`Couldn't add TXT record "${recordValue}" to zone ${zoneId}`);
     }
-    if (response.statusCode === 201) {
-        console.log(`TXT record "${recordValue}" added to softlayer zone ${zoneId} successfully.`);
-        return {success: true}
-    }
-    else {
+    if (response.statusCode !== 201) {
         console.log(`Couldn't add TXT record "${recordValue}" to softlayer zone ${zoneId}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(response.body)}`);
-        throw `Couldn't add TXT record "${recordValue}" to zone ${zoneId}`;
+        throw new Error(`Couldn't add TXT record "${recordValue}" to zone ${zoneId}`);
     }
-
+    console.log(`TXT record "${recordValue}" added to softlayer zone ${zoneId} successfully.`);
 };
 
 /**
@@ -110,11 +103,11 @@ const getZoneIdByDomain = async (domainName, userInfo) => {
     }
     catch (err) {
         console.error(`Couldn't get zone for domain "${domainName}". Reason is: ${getErrorString(err)}`);
-        throw `Couldn't get zone for domain "${domainName}"`;
+        throw new Error(`Couldn't get zone for domain "${domainName}"`);
     }
     if (response.statusCode !== 200) {
         console.error(`Couldn't get zone for domain ${domainName}. Reason is: status code "${response.statusCode}" and body ${JSON.stringify(response.body)}`);
-        throw `Couldn't get zone for domain "${domainName}"`;
+        throw new Error(`Couldn't get zone for domain "${domainName}"`);
     }
     console.log(`Get zone for domain "${domainName} finished successfully with body: ${JSON.stringify(response.body)}`);
     return {id: response.body.length > 0 ? response.body[0].id : undefined};
@@ -149,11 +142,11 @@ const removeChallenge = async (payload, userInfo) => {
     }
     catch (err) {
         console.error(`Couldn't get record named ${recordName}. Reason is: ${getErrorString(err)}`);
-        throw `Couldn't get record named ${recordName}`;
+        throw new Error(`Couldn't get record named ${recordName}`);
     }
     if (res.statusCode !== 200) {
         console.error(`Couldn't get records named ${recordName}. Reason is: status code ${res.statusCode} and body ${JSON.stringify(res.body)}`);
-        throw `Couldn't get record named ${recordName}`;
+        throw new Error(`Couldn't get record named ${recordName}`);
     }
 
     console.log(`Get records named ${recordName} for domain ${domain} returned ${res.body.length} results.`);
@@ -166,7 +159,7 @@ const removeChallenge = async (payload, userInfo) => {
  * Delete single TXT record from softLayer zone.
  * @param recordId
  * @param userInfo user credentials
- * @returns {Promise<boolean>}
+ * @returns {Promise<void>}
  */
 const removeTxtRecord = async (recordId, userInfo) => {
     console.log(`Delete TXT record "${recordId}"`);
@@ -181,17 +174,13 @@ const removeTxtRecord = async (recordId, userInfo) => {
     }
     catch (err) {
         console.log(`Couldn't delete TXT record "${recordId}". Reason is: ${getErrorString(err)}`);
-        throw `Couldn't delete TXT record "${recordId}"`;
+        throw new Error(`Couldn't delete TXT record "${recordId}"`);
     }
-    if (response.statusCode === 200) {
-        console.log(`Delete TXT record "${recordId}" finished successfully.`);
-        return true;
-    }
-    else {
+    if (response.statusCode !== 200) {
         console.log(`Couldn't delete TXT record "${recordId}". Reason is: status code ${response.statusCode} body ${JSON.stringify(response.body)}`);
-        throw `Couldn't delete TXT record "${recordId}"`;
+        throw new Error(`Couldn't delete TXT record "${recordId}"`);
     }
-
+    console.log(`Delete TXT record "${recordId}" finished successfully.`);
 };
 
 /**
@@ -262,10 +251,4 @@ const getErrorString = (error) => {
         return 'Error undefined';
 };
 
-
 exports.main = main;
-
-const softLayerUser = 'IBM1308127';
-const softLayerApiKey = "dcbc2edbf37d23b38208e53a123911b3279add00b1c4b75715f008eb5788aec0";
-
-main({region: 'us-south', softLayerUser: softLayerUser, softLayerApiKey: softLayerApiKey, data: {}});
