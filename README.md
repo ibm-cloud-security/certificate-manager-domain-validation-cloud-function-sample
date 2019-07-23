@@ -8,8 +8,8 @@ The sample demonstrates how to implement an IBM Cloud Function action that recei
 
 The Cloud Function action receives a notification from Certificate Manager containing a DNS TXT record challenge, and then adds this to the DNS provider where the requested domain is registered. Once the domain validation challenge is answered, the Cloud Function also clears this TXT record from the DNS service.
 
-If you use **SoftLayer** as our DNS provider, insrtuction how to write Cloud Function can be found [here](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/SoftLayerSample/README.md)     
-If you use **IBM Cloud Internet Services** as our DNS provider, instructions can be found [here](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/CisSample/README.md).    
+If you use **SoftLayer** as your DNS provider, insrtuction how to write Cloud Function can be found [here](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/SoftLayerSample/README.md)     
+If you use **IBM Cloud Internet Services** as your DNS provider, instructions can be found [here](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/CisSample/README.md).    
 
 ### IBM Cloud Certificate Manager
 1. Setup a Callback URL [Notification Channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
