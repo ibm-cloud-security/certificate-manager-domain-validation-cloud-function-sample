@@ -234,7 +234,7 @@ async function removeChallenge(payload, iamApiKey, baseCisUrl) {
     const records = await getAcmeChallengeDNSRecordIDs(domain, zone.id, accessToken, baseCisUrl);
 
     //Deleting all the acme-challenge TXT records.
-    return Promise.all(records.map(record => deleteRecord(zone, record, accessToken, baseCisUrl)));
+    return Promise.all(records.map(record => deleteRecord(zone, record, accessToken, baseCisUrl).catch()));
 }
 
 /**
@@ -254,7 +254,7 @@ async function main(params) {
 
         // Validate that the notification was sent from a Certificate Manager instance that has allowed access
         if (!params.allowedCertificateManagerCRNs || !params.allowedCertificateManagerCRNs[body.instance_crn]) {
-            console.error(`Certificate Manager instance ${body.instance_crn} is not in allowed to invoke this action`);
+            console.error(`Certificate Manager instance ${body.instance_crn} is not allowed to invoke this action`);
             return Promise.reject({
                 statusCode: 403,
                 headers: {'Content-Type': 'application/json'},
