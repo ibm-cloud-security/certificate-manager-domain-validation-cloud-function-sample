@@ -4,6 +4,8 @@
 1. An instance of [IBM Cloud Certificate Manager.](https://cloud.ibm.com/docs/services/certificate-manager)
 2. Account in SoftLayer
 
+> **Note** Before you can work with DNS records in SoftLayer, make sure to request appropriate access permissions from the account owner.
+
 ## Configuration
 ### IBM Cloud Function action
 1. Create a new [IBM Cloud Function action](https://cloud.ibm.com/docs/openwhisk/index.html#openwhisk_start_hello_world)
