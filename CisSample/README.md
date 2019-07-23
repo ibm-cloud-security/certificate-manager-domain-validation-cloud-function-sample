@@ -1,5 +1,4 @@
-# Certificate Order - DNS Domain Validation sample 
-# for IBM Cloud Internet Services
+# Certificate Order - DNS Domain Validation sample for IBM Cloud Internet Services (CIS)
 ## Prerequisites
  
 1. An instance of [IBM Cloud Certificate Manager.](https://cloud.ibm.com/docs/services/certificate-manager)
