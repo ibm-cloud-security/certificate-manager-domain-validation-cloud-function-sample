@@ -124,7 +124,7 @@ const removeChallenge = async (payload, userInfo) => {
     let domain = payload.domain;
     //remove wildcard in case its wildcard certificate.
     domain = domain.replace('*.', '');
-    const zone = await getZoneIdByDomain(domain);
+    const zone = await getZoneIdByDomain(domain, userInfo);
     if (!zone || !zone.id) {
         throw `Can't find zone id for domain ${domain}`;
     }
