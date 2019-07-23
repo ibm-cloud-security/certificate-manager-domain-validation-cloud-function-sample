@@ -1,15 +1,5 @@
-# Certificate Order - DNS Domain Validation sample
-## General
-IBM Cloud Certificate Manager lets you order TLS certificates signed by Let’s Encrypt.
-
-When you order a certificate, you have to prove that you own the domains for which you are requesting the certificate for. This repository contains sample code to show you how to prove you own these domains.
-
-The sample demonstrates how to implement an IBM Cloud Function action that receives a domain validation challenge from Certificate Manager, and answers it.
-
-The Cloud Function action receives a notification from Certificate Manager containing a DNS TXT record challenge, and then adds this to the DNS provider where the requested domain is registered. Once the domain validation challenge is answered, the Cloud Function also clears this TXT record from the DNS service.
-
-In this sample we used IBM Cloud Internet Services as our DNS provider, where we registered our domains, but you can use this sample with any other DNS provider that offers an API for updating TXT records.
-
+# Certificate Order - DNS Domain Validation sample 
+# for IBM Cloud Internet Services
 ## Prerequisites
  
 1. An instance of [IBM Cloud Certificate Manager.](https://cloud.ibm.com/docs/services/certificate-manager)
