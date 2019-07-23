@@ -1,4 +1,4 @@
-# Certificate Order - DNS Domain Validation sample
+# Certificate Order - DNS Domain Validation samples
 ## General
 IBM Cloud Certificate Manager lets you order TLS certificates signed by Let’s Encrypt.
 
