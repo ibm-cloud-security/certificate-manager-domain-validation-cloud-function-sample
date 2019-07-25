@@ -46,9 +46,6 @@ async function setChallenge(payload, userInfo) {
     //remove wildcard in case its wildcard certificate.
     domain = domain.replace('*.', '');
     let zone = await getZoneIdByDomain(domain, userInfo);
-    if (!zone || !zone.id) {
-        throw new Error(`Couldn't find zone id for domain ${domain}`);
-    }
     const recordName = payload.challenge.txt_record_name;
     const recordValue = payload.challenge.txt_record_val;
     await addTxtRecord(zone.id, recordName, recordValue, userInfo);
@@ -57,13 +54,13 @@ async function setChallenge(payload, userInfo) {
 /**
  *
  * @param zoneId
- * @param recordName
- * @param recordValue
+ * @param recordName challenge key
+ * @param recordValue challenge value
  * @param userInfo user credentials
  * @returns {Promise<void>}
  */
 const addTxtRecord = async (zoneId, recordName, recordValue, userInfo) => {
-    console.log(`Add TXT record "${recordValue}" to softlayer zone ${zoneId}`);
+    console.log(`Add TXT record "${recordValue}" to zone ${zoneId}`);
     const options = {
         method: 'POST',
         uri: `${softlayerBaseurl}/SoftLayer_Dns_Domain_ResourceRecord`,
@@ -75,26 +72,27 @@ const addTxtRecord = async (zoneId, recordName, recordValue, userInfo) => {
         response = await request(options);
     }
     catch (err) {
-        console.log(`Couldn't add TXT record "${recordValue}" to softlayer zone ${zoneId}. Reason is: ${getErrorString(err)}`);
+        console.log(`Couldn't add TXT record "${recordValue}" to zone ${zoneId}. Reason is: ${getErrorString(err)}`);
         throw new Error(`Couldn't add TXT record "${recordValue}" to zone ${zoneId}`);
     }
     if (response.statusCode !== 201) {
-        console.log(`Couldn't add TXT record "${recordValue}" to softlayer zone ${zoneId}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(response.body)}`);
+        console.log(`Couldn't add TXT record "${recordValue}" to zone ${zoneId}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(response.body)}`);
         throw new Error(`Couldn't add TXT record "${recordValue}" to zone ${zoneId}`);
     }
-    console.log(`TXT record "${recordValue}" added to softlayer zone ${zoneId} successfully.`);
+    console.log(`TXT record "${recordValue}" added to zone ${zoneId} successfully.`);
 };
 
 /**
  * Get zone id by domain.
- * @param domainName
+ * @param domain
  * @param userInfo user credentials
  * @return object {id:zoneId}
  */
-const getZoneIdByDomain = async (domainName, userInfo) => {
+const getZoneIdByDomain = async (domain, userInfo) => {
+    console.log(`Get zone id for domain ${domain}`);
     const options = {
         method: 'GET',
-        uri: `${softlayerBaseurl}/SoftLayer_Dns_Domain/getByDomainName/${encodeURIComponent(domainName)}${encodeURIComponent('.json')}`,
+        uri: `${softlayerBaseurl}/SoftLayer_Dns_Domain/getByDomainName/${encodeURIComponent(domain)}${encodeURIComponent('.json')}`,
         auth: {user: userInfo.user, pass: userInfo.apiKey}
     };
     let response;
@@ -102,15 +100,19 @@ const getZoneIdByDomain = async (domainName, userInfo) => {
         response = await request(options);
     }
     catch (err) {
-        console.error(`Couldn't get zone for domain "${domainName}". Reason is: ${getErrorString(err)}`);
-        throw new Error(`Couldn't get zone for domain "${domainName}"`);
+        console.error(`Couldn't get zone for domain "${domain}". Reason is: ${getErrorString(err)}`);
+        throw new Error(`Couldn't get zone for domain "${domain}"`);
     }
     if (response.statusCode !== 200) {
-        console.error(`Couldn't get zone for domain ${domainName}. Reason is: status code "${response.statusCode}" and body ${JSON.stringify(response.body)}`);
-        throw new Error(`Couldn't get zone for domain "${domainName}"`);
+        console.error(`Couldn't get zone for domain ${domain}. Reason is: status code "${response.statusCode}" and body ${JSON.stringify(response.body)}`);
+        throw new Error(`Couldn't get zone for domain "${domain}"`);
     }
-    console.log(`Get zone for domain "${domainName} finished successfully with body: ${JSON.stringify(response.body)}`);
-    return {id: response.body.length > 0 ? response.body[0].id : undefined};
+    if (response.body.length === 0) {
+        console.error(`Couldn't find domain ${domain}.`);
+        throw new Error(`Couldn't find domain ${domain}`);
+    }
+    console.log(`Get zone for domain "${domain} finished successfully with body: ${JSON.stringify(response.body)}`);
+    return {id: response.body[0].id};
 };
 
 
@@ -125,10 +127,6 @@ const removeChallenge = async (payload, userInfo) => {
     //remove wildcard in case its wildcard certificate.
     domain = domain.replace('*.', '');
     const zone = await getZoneIdByDomain(domain, userInfo);
-    if (!zone || !zone.id) {
-        throw `Can't find zone id for domain ${domain}`;
-    }
-
     const recordName = payload.challenge.txt_record_name;
     const recordValue = payload.challenge.txt_record_val;
     const options = {
@@ -151,12 +149,12 @@ const removeChallenge = async (payload, userInfo) => {
 
     console.log(`Get records named ${recordName} for domain ${domain} returned ${res.body.length} results.`);
     await Promise.all(res.body.map(r => removeTxtRecord(r.id, userInfo).catch()));
-    console.log(`Deletion TXT records for domain ${domain} finished.`)
+    console.log(`Deletion TXT records for domain ${domain} finished.`);
 };
 
 
 /**
- * Delete single TXT record from softLayer zone.
+ * Delete single TXT record from zone.
  * @param recordId
  * @param userInfo user credentials
  * @returns {Promise<void>}
@@ -250,5 +248,3 @@ const getErrorString = (error) => {
     else
         return 'Error undefined';
 };
-
-exports.main = main;
