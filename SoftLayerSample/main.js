@@ -180,13 +180,14 @@ const setChallenge = async (payload, userInfo) => {
  * @returns {Promise<void>}
  */
 const removeChallenge = async (payload, userInfo) => {
+    console.log(`Remove challenge: '${payload.domain} : ${JSON.stringify(payload.challenge)}`);
     let domain = payload.domain;
     //remove wildcard in case its wildcard certificate.
     domain = domain.replace('*.', '');
     const zoneId = await getZoneIdByDomain(domain, userInfo);
     const records = await getTxtRecords(zoneId, payload, userInfo);
     await Promise.all(records.map(r => removeTxtRecord(r.id, userInfo).catch()));
-    console.log(`Deletion TXT records for domain ${domain} finished.`);
+    console.log(`Remove challenge for domain ${domain} finished.`);
 };
 
 /**
