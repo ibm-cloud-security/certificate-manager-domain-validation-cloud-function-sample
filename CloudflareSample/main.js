@@ -133,7 +133,7 @@ const getTxtRecords = async (zoneId, domain, payload, userInfo) => {
     console.log(`Get records named ${recordName} from zone ${zoneId}`);
     const options = {
         method: 'GET',
-        uri: `${cloudflareBaseurl}/zones/${zoneId}/dns_records?type=TXT&name=${encodeURIComponent(recordValue)}.${encodeURIComponent(domain)}&content=${encodeURIComponent(recordValue)}`,
+        uri: `${cloudflareBaseurl}/zones/${zoneId}/dns_records?type=TXT&name=${recordName}.${encodeURIComponent(domain)}&content=${encodeURIComponent(recordValue)}`,
         headers: {
             'X-Auth-Email': userInfo.cloudflareEmail,
             'X-Auth-Key': userInfo.cloudflareApiKey,
