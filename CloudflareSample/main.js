@@ -249,8 +249,8 @@ const main = async (params)=> {
         const publicKey = await getPublicKey(body, certificateManagerApiUrl);
         const decodedNotification = await jwtVerify(params.data, publicKey);
         const userInfo = {
-            user: params.cloudflareEmail,
-            apiKey: params.cloudflareApiKey
+            cloudflareEmail: params.cloudflareEmail,
+            cloudflareApiKey: params.cloudflareApiKey
         };
 
         console.log(`Notification message body: ${JSON.stringify(decodedNotification)}`);
