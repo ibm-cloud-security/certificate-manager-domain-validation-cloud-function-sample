@@ -108,6 +108,7 @@ const getZoneIdByDomain = async (domain, userInfo) => {
 const getTxtRecords = async (zoneId, payload, userInfo) => {
     const recordName = payload.challenge.txt_record_name;
     const recordValue = payload.challenge.txt_record_val;
+    console.log(`Get records named ${recordName} from zone ${zoneId}`);
     const options = {
         method: 'GET',
         uri: `${softlayerBaseurl}/SoftLayer_Dns_Domain/${zoneId}/getResourceRecords?objectFilter={"resourceRecords":{"host":{"operation": "${recordName}"},"data":{"operation": "${recordValue}"}}}`,
