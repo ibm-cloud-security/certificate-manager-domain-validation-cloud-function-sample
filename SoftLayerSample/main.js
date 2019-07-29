@@ -237,7 +237,7 @@ const main = async (params)=> {
         }
     }
     catch (err) {
-        console.log(`Action failed. Reason:${getErrorString(err)}`);
+        console.log(`Action failed. Reason: ${getErrorString(err)}`);
         return Promise.reject({
             statusCode: err.statusCode ? err.statusCode : 500,
             headers: {'Content-Type': 'application/json'},
