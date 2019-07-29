@@ -69,7 +69,7 @@ const addTxtRecord = async (zoneId, payload, userInfo) => {
  * Get zone id by domain.
  * @param domain
  * @param userInfo user credentials
- * @return zoneId
+ * @returns {Promise<zoneId>}
  */
 const getZoneIdByDomain = async (domain, userInfo) => {
     console.log(`Get zone id for domain ${domain}`);
@@ -103,7 +103,7 @@ const getZoneIdByDomain = async (domain, userInfo) => {
  * @param zoneId
  * @param payload challenge data
  * @param userInfo user credentials
- * @returns {Promise<*>}
+ * @returns {Promise<[]>}
  */
 const getTxtRecords = async (zoneId, payload, userInfo) => {
     const recordName = payload.challenge.txt_record_name;
