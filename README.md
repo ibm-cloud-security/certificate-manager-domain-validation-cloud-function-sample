@@ -13,7 +13,7 @@ The Cloud Function action receives a notification from Certificate Manager conta
 You can find DNS provider-specific instructions on how to implement an IBM Cloud Function action in the following links.
 * [SoftLayer](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/SoftLayerSample)
 * [Cloudflare](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/CloudflareSample)
-* [IBM Cloud Internet Services](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/CisSample
+* [IBM Cloud Internet Services](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/CisSample)
 
 ### IBM Cloud Certificate Manager
 1. Setup a Callback URL [Notification Channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
