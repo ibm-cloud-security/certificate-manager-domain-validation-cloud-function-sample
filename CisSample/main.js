@@ -269,9 +269,6 @@ async function main(params) {
 
         console.log(`Notification message body: ${JSON.stringify(decodedNotification)}`);
 
-        //The CIS instance CRN  TODO use the correct internet service crn.
-        const cisCrn = 'crn:v1:bluemix:public:internet-svcs:global:a/<YOUR_ACCOUNT_ID>:<YOUR_INSTANCE_ID>';
-
         //The base CIS url.
         const baseCisUrl = `https://api.cis.cloud.ibm.com/v1/${encodeURIComponent(params.cisCrn)}`;
 
