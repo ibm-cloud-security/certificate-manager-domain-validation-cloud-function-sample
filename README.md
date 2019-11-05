@@ -15,6 +15,8 @@ You can find DNS provider-specific instructions on how to implement an IBM Cloud
 * [Cloudflare](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/CloudflareSample)
 * [IBM Cloud Internet Services](https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample/blob/cloudFunction/CisSample)
 
+**Tip:** You can find Cloud Function logs by adding this filter in your Logger `_type:"user_log"`
+
 ### IBM Cloud Certificate Manager
 1. Setup a Callback URL [Notification Channel](https://cloud.ibm.com/docs/services/certificate-manager?topic=certificate-manager-configuring-notifications#callback) in your Certificate Manager instance.
 
