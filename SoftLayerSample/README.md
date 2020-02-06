@@ -1,4 +1,4 @@
-# Certificate Order -  DNS Domain Validation sample for SofLayer
+# Certificate Order -  DNS Domain Validation sample for SoftLayer
 ## Prerequisites
  
 1. An instance of [IBM Cloud Certificate Manager](https://cloud.ibm.com/docs/services/certificate-manager)
