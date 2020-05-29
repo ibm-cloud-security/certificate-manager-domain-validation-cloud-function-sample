@@ -32,9 +32,9 @@
     2. `cmRegion` - your Certificate Manager service instance region value. Can be one of: `us-south`, `eu-gb`, `eu-de`, `jp-tok`  
         E.g. `"us-south"`
  
-    3. `softLayerUser` - IBM id of an owner of SoftLayer account (it looks like `IBM1234567`)
+    3. `softLayerUser` - ID of the SoftLayer account owner, or user with appropriate permissions
     
-    4. `softLayerApiKey` - apikey of an owner of SoftLayer account
+    4. `softLayerApiKey` - API key of the SoftLayer account owner, or user with appropriate permissions
  
          * Create an API key in **SoftLayer -> Account -> Users**, select user, click on **Generate** .
          
