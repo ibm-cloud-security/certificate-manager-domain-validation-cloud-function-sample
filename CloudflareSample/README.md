@@ -30,7 +30,7 @@
     2. `cmRegion` - your Certificate Manager service instance region value. Can be one of: `us-south`, `eu-gb`, `eu-de`, `jp-tok`  
         E.g. `"us-south"`
      
-    4. `cloudflareApiKey` - API key generated on the "My Account" page
+    3. `cloudflareApiKey` - API key generated on the "My Account" page
  
 4. In the **Endpoints** sidebar, tick the **Enable as Web Action** checkbox
  
