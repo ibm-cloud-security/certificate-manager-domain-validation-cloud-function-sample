@@ -49,8 +49,7 @@ const addTxtRecord = async (zoneId, domain, payload, userInfo) => {
         method: 'POST',
         uri: `${cloudflareBaseurl}/zones/${zoneId}/dns_records`,
         headers: {
-            'X-Auth-Email': userInfo.cloudflareEmail,
-            'X-Auth-Key': userInfo.cloudflareApiKey,
+            'Authorization': `Bearer ${userInfo.cloudflareApiKey}`,
             'Content-Type': 'application/json'
         },
         json: {
@@ -94,8 +93,7 @@ const getZoneIdByDomain = async (domain, userInfo) => {
         method: 'GET',
         uri: `${cloudflareBaseurl}/zones?name=${encodeURIComponent(domain)}&status=active`,
         headers: {
-            'X-Auth-Email': userInfo.cloudflareEmail,
-            'X-Auth-Key': userInfo.cloudflareApiKey,
+            'Authorization': `Bearer ${userInfo.cloudflareApiKey}`,
             'Content-Type': 'application/json'
         }
     };
@@ -135,8 +133,7 @@ const getTxtRecords = async (zoneId, domain, payload, userInfo) => {
         method: 'GET',
         uri: `${cloudflareBaseurl}/zones/${zoneId}/dns_records?type=TXT&name=${recordName}.${encodeURIComponent(domain)}&content=${encodeURIComponent(recordValue)}`,
         headers: {
-            'X-Auth-Email': userInfo.cloudflareEmail,
-            'X-Auth-Key': userInfo.cloudflareApiKey,
+            'Authorization': `Bearer ${userInfo.cloudflareApiKey}`,
             'Content-Type': 'application/json'
         }
     };
@@ -169,8 +166,7 @@ const removeTxtRecord = async (zoneId, recordId, userInfo) => {
         method: 'DELETE',
         uri: `${cloudflareBaseurl}/zones/${zoneId}/dns_records/${recordId}`,
         headers: {
-            'X-Auth-Email': userInfo.cloudflareEmail,
-            'X-Auth-Key': userInfo.cloudflareApiKey,
+            'Authorization': `Bearer ${userInfo.cloudflareApiKey}`,
             'Content-Type': 'application/json'
         }
     };
@@ -249,7 +245,6 @@ const main = async (params)=> {
         const publicKey = await getPublicKey(body, certificateManagerApiUrl);
         const decodedNotification = await jwtVerify(params.data, publicKey);
         const userInfo = {
-            cloudflareEmail: params.cloudflareEmail,
             cloudflareApiKey: params.cloudflareApiKey
         };
 
