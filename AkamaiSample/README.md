@@ -43,6 +43,4 @@
 
     6. `access_token` - The access token for Akamai API calling. (Get from Akamai client credential)
 
-    7. `max-body` - The max body size of the Akamai API calling. (Get from Akamai client credential)
-
          * Refer to [this guidance](https://developer.akamai.com/api/getting-started#authsetup) to create the Akamai client credential for API calling.
