@@ -11,17 +11,57 @@
 
 ### IBM Cloud Function action
 
-1. Create a new [IBM Cloud Function action](https://cloud.ibm.com/docs/openwhisk/index.html#openwhisk_start_hello_world)
+1. Clone the sample code
 
-   * In IBM Cloud Functions, select **Actions** from the sidebar
-   * Click on **Create**
-   * Follow the on-screen instructions
+```bash
+git clone https://github.com/ibm-cloud-security/certificate-manager-domain-validation-cloud-function-sample
+```
 
-2. Deploy the sample
+2. Enter the `AkamaiSmaple` directory
 
-   Select **Code** from the sidebar, and paste the contents of the **main.js** file of the sample
+```bash
+cd AkamaiSample/
+```
 
-3. [Bind parameters to the action](https://cloud.ibm.com/docs/openwhisk/parameters.html#default-params-action)
+3. Install the package
+
+```bash
+npm install npm install package-lock.json
+```
+
+4. Compress the content
+
+```bash
+zip -r action.zip *
+```
+
+5. Follow this doc to install the CLI and plug-in, https://cloud.ibm.com/docs/openwhisk?topic=openwhisk-cli_install
+
+6. Login IBM cloud
+
+```bash
+ibmcloud login --sso
+```
+
+7. Create a new namespace
+
+```bash
+ibmcloud fn namespace create DNSCertManagerNS
+```
+
+8. Target to the new namespace
+
+```bash
+ibmcloud fn namespace target DNSCertManagerNS
+```
+
+9. Create a cloud function action and upload the sample code
+
+```bash
+ibmcloud fn action create AkamaiCertManagerAction action.zip --kind nodejs:12
+```
+
+10. [Bind parameters to the action](https://cloud.ibm.com/docs/openwhisk/parameters.html#default-params-action)
 
    Select **Parameters** from the sidebar, and add the following:
 
