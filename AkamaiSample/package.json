@@ -1,0 +1,7 @@
+{
+    "name": "akamai-cert-manager-dns-domain-validation",
+    "main": "main.js",
+    "dependencies": {
+        "edgegrid": "^3.0.8"
+    }
+}
