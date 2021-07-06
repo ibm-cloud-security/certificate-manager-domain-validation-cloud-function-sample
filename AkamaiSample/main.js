@@ -1,4 +1,6 @@
 const {promisify} = require('bluebird');
+let request = promisify(require('request'));
+// request = request.defaults({json: true});
 const jwtVerify = promisify(require('jsonwebtoken').verify);
 const jwtDecode = require('jsonwebtoken').decode;
 const EdgeGrid = require('edgegrid');
@@ -64,19 +66,33 @@ const addTxtRecord = async (zoneName, payload, userInfo) => {
         body: data
     });
 
-    eg.send(function(error, response, body) {
-       if (error) {
-           console.log(`Couldn't add TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
-           throw new Error(`Couldn't add TXT record "${recordName}" to zone ${zoneName}`);
-       }
+    // eg.send(function(error, response, body) {
+    //     if (error) {
+    //        console.log(`Couldn't add TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
+    //        throw new Error(`Couldn't add TXT record "${recordName}" to zone ${zoneName}`);
+    //     }
 
-       if (response.statusCode !== 201) {
-           console.log(`Couldn't add TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(body)}`);
-            throw new Error(`Couldn't add TXT record "${recordName}" to zone ${zoneName}`);
-        }
+    //     if (response.statusCode !== 201) {
+    //        console.log(`Couldn't add TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(body)}`);
+    //        throw new Error(`Couldn't add TXT record "${recordName}" to zone ${zoneName}`);
+    //     }
 
-        console.log(`TXT record "${recordName}" added to zone ${zoneName} successfully.`);
-    });
+    //     console.log(`TXT record "${recordName}" added to zone ${zoneName} successfully.`);
+    // });
+
+    let response;
+    try {
+        response = await request(eg.request);
+    }
+    catch (err) {
+        console.log(`Couldn't add TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
+        throw new Error(`Couldn't add TXT record "${recordName}" to zone ${zoneName}`);
+    }
+    if (response.statusCode !== 201) {
+        console.log(`Couldn't add TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(response.body)}`);
+        throw new Error(`Couldn't add TXT record "${recordName}" to zone ${zoneName}`);
+    }
+    console.log(`Delete TXT record "${recordName}" finished successfully.`);
 };
 
 /**
@@ -103,19 +119,34 @@ const removeTxtRecord = async (zoneName, payload, userInfo) => {
         body: {}
     });
 
-    eg.send(function(error, response, body) {
-       if (error) {
-           console.log(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
-           throw new Error(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}`);
-       }
+    // eg.send(function(error, response, body) {
+    //     throw new Error(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}`);
+    //     if (error) {
+    //        console.log(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
+    //        throw new Error(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}`);
+    //     }
 
-       if (response.statusCode !== 204) {
-           console.log(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(body)}`);
-            throw new Error(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}`);
-        }
+    //     if (response.statusCode !== 204 && response.statusCode !== 404) {
+    //         console.log(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(body)}`);
+    //         throw new Error(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}`);
+    //     }
 
-        console.log(`Delete TXT record "${recordName}" to zone ${zoneName} successfully.`);
-    });
+    //     console.log(`Delete TXT record "${recordName}" to zone ${zoneName} successfully.`);
+    // });
+
+    let response;
+    try {
+        response = await request(eg.request);
+    }
+    catch (err) {
+        console.log(`Couldn't delete TXT record "${recordName}". Reason is: ${getErrorString(err)}`);
+        throw new Error(`Couldn't delete TXT record "${recordName}"`);
+    }
+    if (response.statusCode !== 204 && response.statusCode !== 404) {
+        console.log(`Couldn't delete TXT record "${recordName}". Reason is: status code ${response.statusCode} body ${JSON.stringify(response.body)}`);
+        throw new Error(`Couldn't delete TXT record "${recordName}"`);
+    }
+    console.log(`Delete TXT record "${recordName}" finished successfully.`);
 };
 
 /**
@@ -131,6 +162,7 @@ const setChallenge = async (payload, userInfo) => {
     //remove wildcard in case its wildcard certificate.
     domain = domain.replace('*.', '');
     await addTxtRecord(domain, payload, userInfo);
+    console.log(`Add challenge for domain ${domain} finished.`);
 };
 
 /**
@@ -161,6 +193,17 @@ const removeChallenge = async (payload, userInfo) => {
  */
 const main = async (params)=> {
     console.log("Cloud function invoked.");
+    // const params = {
+    //     host: "akab-b44g4bn7hhe422bf-tk2nbacgi42fu6fs.luna.akamaiapis.net",
+    //     event_type: "cert_domain_validation_required",
+    //     domain: "cdn-demo.com",
+    //     record_name: "text1.cdn-demo.com",
+    //     record_value: "text1",
+    //     client_secret: "096SIjUzu41XRD/JRKNzfw8uzrWlVn3P3zRzyQjemzw=",
+    //     access_token: "akab-uhgiaytcrvjao6mx-47lm5aqb3wygrje5",
+    //     client_token: "akab-lyqudahrqrw57kko-lfx4rm3yf3xw2au6"
+    // }
+
     try {
 
         // const body = jwtDecode(params.data);
