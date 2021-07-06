@@ -35,6 +35,63 @@ const getPublicKey = async (body, certificateManagerApiUrl) => {
 };
 
 /**
+ * Get TXT record to domain
+ * @param zoneName zone name
+ * @param payload challenge data
+ * @param userInfo user credentials
+ * @returns {Promise<void>}
+ */
+ const getTxtRecord = async (zoneName, payload, userInfo) => {
+    const recordName = payload.challenge.txt_record_name;
+    console.log(`Get TXT record "${recordName}" to zone ${zoneName}`);
+
+    var eg = new EdgeGrid(
+        userInfo.client_token,
+        userInfo.client_secret,
+        userInfo.access_token,
+        `https://${akamaiHost}`);
+
+    eg.auth({
+        path: `/config-dns/v2/zones/${zoneName}/names/${recordName}/types/txt`,
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'},
+    });
+
+    // eg.send(function(error, response, body) {
+    //     if (error) {
+    //        console.log(`Couldn't get TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
+    //        throw new Error(`Couldn't get TXT record "${recordName}" to zone ${zoneName}`);
+    //     }
+
+    //     if (response.statusCode !== 201) {
+    //        console.log(`Couldn't get TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(body)}`);
+    //        throw new Error(`Couldn't get TXT record "${recordName}" to zone ${zoneName}`);
+    //     }
+
+    //     console.log(`Get TXT record "${recordName}" to zone ${zoneName} successfully.`);
+    // });
+
+    let response;
+    let ret;
+    try {
+        response = await request(eg.request);
+    }
+    catch (err) {
+        console.error(`Couldn't get record named ${recordName}. Reason is: ${getErrorString(err)}`);
+        throw new Error(`Couldn't get record named ${recordName}`);
+    } if (response.statusCode == 200) {
+        ret = response.body;
+    } else if (response.statusCode == 404) {
+        ret = [];
+    } else {
+        console.error(`Couldn't get records named ${recordName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(response.body)}`);
+        throw new Error(`Couldn't get record named ${recordName}`);
+    }
+    console.log(`Get records named ${recordName} returned ${ret}.`);
+    return ret;
+};
+
+/**
  * Add TXT record to domain
  * @param zoneName zone name
  * @param payload challenge data
@@ -44,7 +101,7 @@ const getPublicKey = async (body, certificateManagerApiUrl) => {
 const addTxtRecord = async (zoneName, payload, userInfo) => {
     const recordName = payload.challenge.txt_record_name;
     const recordValue = payload.challenge.txt_record_val;
-    console.log(`Add TXT record "${recordName}" to zone ${zoneName}`);
+    console.log(`Add TXT record "${recordName}:${recordValue}" to zone ${zoneName}`);
 
     var data = {
         "name": recordName,
@@ -92,7 +149,7 @@ const addTxtRecord = async (zoneName, payload, userInfo) => {
         console.log(`Couldn't add TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(response.body)}`);
         throw new Error(`Couldn't add TXT record "${recordName}" to zone ${zoneName}`);
     }
-    console.log(`Delete TXT record "${recordName}" finished successfully.`);
+    console.log(`Add TXT record "${recordName}" finished successfully.`);
 };
 
 /**
@@ -161,6 +218,10 @@ const setChallenge = async (payload, userInfo) => {
     let domain = payload.domain;
     //remove wildcard in case its wildcard certificate.
     domain = domain.replace('*.', '');
+    record = await getTxtRecord(domain, payload, userInfo);
+    if (record.length !== 0) {
+        await removeTxtRecord(domain, payload, userInfo);
+    }
     await addTxtRecord(domain, payload, userInfo);
     console.log(`Add challenge for domain ${domain} finished.`);
 };
