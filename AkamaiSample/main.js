@@ -57,20 +57,6 @@ const getPublicKey = async (body, certificateManagerApiUrl) => {
         headers: {'Content-Type': 'application/json'},
     });
 
-    // eg.send(function(error, response, body) {
-    //     if (error) {
-    //        console.log(`Couldn't get TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
-    //        throw new Error(`Couldn't get TXT record "${recordName}" to zone ${zoneName}`);
-    //     }
-
-    //     if (response.statusCode !== 201) {
-    //        console.log(`Couldn't get TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(body)}`);
-    //        throw new Error(`Couldn't get TXT record "${recordName}" to zone ${zoneName}`);
-    //     }
-
-    //     console.log(`Get TXT record "${recordName}" to zone ${zoneName} successfully.`);
-    // });
-
     let response;
     let ret;
     try {
@@ -123,20 +109,6 @@ const addTxtRecord = async (zoneName, payload, userInfo) => {
         body: data
     });
 
-    // eg.send(function(error, response, body) {
-    //     if (error) {
-    //        console.log(`Couldn't add TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
-    //        throw new Error(`Couldn't add TXT record "${recordName}" to zone ${zoneName}`);
-    //     }
-
-    //     if (response.statusCode !== 201) {
-    //        console.log(`Couldn't add TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(body)}`);
-    //        throw new Error(`Couldn't add TXT record "${recordName}" to zone ${zoneName}`);
-    //     }
-
-    //     console.log(`TXT record "${recordName}" added to zone ${zoneName} successfully.`);
-    // });
-
     let response;
     try {
         response = await request(eg.request);
@@ -175,21 +147,6 @@ const removeTxtRecord = async (zoneName, payload, userInfo) => {
         headers: {'Content-Type': 'application/json'},
         body: {}
     });
-
-    // eg.send(function(error, response, body) {
-    //     throw new Error(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}`);
-    //     if (error) {
-    //        console.log(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
-    //        throw new Error(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}`);
-    //     }
-
-    //     if (response.statusCode !== 204 && response.statusCode !== 404) {
-    //         console.log(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(body)}`);
-    //         throw new Error(`Couldn't delete TXT record "${recordName}" to zone ${zoneName}`);
-    //     }
-
-    //     console.log(`Delete TXT record "${recordName}" to zone ${zoneName} successfully.`);
-    // });
 
     let response;
     try {
@@ -254,47 +211,23 @@ const removeChallenge = async (payload, userInfo) => {
  */
 const main = async (params)=> {
     console.log("Cloud function invoked.");
-    // const params = {
-    //     host: "akab-b44g4bn7hhe422bf-tk2nbacgi42fu6fs.luna.akamaiapis.net",
-    //     event_type: "cert_domain_validation_required",
-    //     domain: "cdn-demo.com",
-    //     record_name: "text1.cdn-demo.com",
-    //     record_value: "text1",
-    //     client_secret: "096SIjUzu41XRD/JRKNzfw8uzrWlVn3P3zRzyQjemzw=",
-    //     access_token: "akab-uhgiaytcrvjao6mx-47lm5aqb3wygrje5",
-    //     client_token: "akab-lyqudahrqrw57kko-lfx4rm3yf3xw2au6"
-    // }
 
     try {
 
-        // const body = jwtDecode(params.data);
+        const body = jwtDecode(params.data);
 
-        // // Validate that the notification was sent from a Certificate Manager instance that has allowed access
-        // if (!params.allowedCertificateManagerCRNs || !params.allowedCertificateManagerCRNs[body.instance_crn]) {
-        //     console.error(`Certificate Manager instance ${body.instance_crn} is not allowed to invoke this action`);
-        //     return Promise.reject({
-        //         statusCode: 403,
-        //         headers: {'Content-Type': 'application/json'},
-        //         body: {message: 'Unauthorized'},
-        //     });
-        // }
-        // const certificateManagerApiUrl = `https://${params.cmRegion}.certificate-manager.cloud.ibm.com`;
-        // const publicKey = await getPublicKey(body, certificateManagerApiUrl);
-        // const decodedNotification = await jwtVerify(params.data, publicKey);
-        const decodedNotification = {
-            event_type: params.event_type,
-            domain: params.domain,
-            challenge: {
-                txt_record_name: params.record_name,
-                txt_record_val: params.record_value
-            }
-        };
-        akamaiHost = params.host;
-        const userInfo = {
-            client_secret: params.client_secret,
-            access_token: params.access_token,
-            client_token: params.client_token
-        };
+        // Validate that the notification was sent from a Certificate Manager instance that has allowed access
+        if (!params.allowedCertificateManagerCRNs || !params.allowedCertificateManagerCRNs[body.instance_crn]) {
+            console.error(`Certificate Manager instance ${body.instance_crn} is not allowed to invoke this action`);
+            return Promise.reject({
+                statusCode: 403,
+                headers: {'Content-Type': 'application/json'},
+                body: {message: 'Unauthorized'},
+            });
+        }
+        const certificateManagerApiUrl = `https://${params.cmRegion}.certificate-manager.cloud.ibm.com`;
+        const publicKey = await getPublicKey(body, certificateManagerApiUrl);
+        const decodedNotification = await jwtVerify(params.data, publicKey);
 
         console.log(`Notification message body: ${JSON.stringify(decodedNotification)}`);
         switch (decodedNotification.event_type) {
