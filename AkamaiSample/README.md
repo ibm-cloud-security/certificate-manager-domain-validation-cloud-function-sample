@@ -26,7 +26,7 @@ cd AkamaiSample/
 3. Install the package
 
 ```bash
-npm install npm install package-lock.json
+npm install package-lock.json
 ```
 
 4. Compress the content
@@ -59,6 +59,12 @@ ibmcloud fn namespace target DNSCertManagerNS
 
 ```bash
 ibmcloud fn action create AkamaiCertManagerAction action.zip --kind nodejs:12
+```
+
+And you can also update the code with this cmd:
+
+```bash
+ibmcloud fn action update AkamaiCertManagerAction action.zip --kind nodejs:12
 ```
 
 10. [Bind parameters to the action](https://cloud.ibm.com/docs/openwhisk/parameters.html#default-params-action)
