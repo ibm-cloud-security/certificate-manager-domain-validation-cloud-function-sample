@@ -2,6 +2,9 @@
     "name": "akamai-cert-manager-dns-domain-validation",
     "main": "main.js",
     "dependencies": {
-        "edgegrid": "^3.0.8"
+        "bluebird": "^3.7.2",
+        "edgegrid": "^3.0.8",
+        "jsonwebtoken": "^8.5.1",
+        "package-lock.json": "^1.0.0"
     }
 }
