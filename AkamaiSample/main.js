@@ -125,6 +125,54 @@ const addTxtRecord = async (zoneName, payload, userInfo) => {
 };
 
 /**
+ * Update TXT record to domain
+ * @param zoneName zone name
+ * @param payload challenge data
+ * @param userInfo user credentials
+ * @returns {Promise<void>}
+ */
+ const updateTxtRecord = async (zoneName, payload, userInfo) => {
+    const recordName = payload.challenge.txt_record_name;
+    const recordValue = payload.challenge.txt_record_val;
+    console.log(`Update TXT record "${recordName}" to zone ${zoneName}`);
+
+    var data = {
+        "name": recordName,
+        "type": "txt",
+        "ttl": 60,
+        "rdata": [recordValue]
+    };
+
+    var eg = new EdgeGrid(
+        userInfo.client_token,
+        userInfo.client_secret,
+        userInfo.access_token,
+        `https://${akamaiHost}`);
+
+    eg.auth({
+        path: `/config-dns/v2/zones/${zoneName}/names/${recordName}/types/txt`,
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: data
+    });
+
+    let response;
+    try {
+        // console.log(eg);
+        response = await request(eg.request);
+    }
+    catch (err) {
+        console.log(`Couldn't update TXT record "${recordName}" to zone ${zoneName}. Reason is: ${getErrorString(error)}`);
+        throw new Error(`Couldn't update TXT record "${recordName}" to zone ${zoneName}`);
+    }
+    if (response.statusCode !== 200) {
+        console.log(`Couldn't update TXT record "${recordName}" to zone ${zoneName}. Reason is: status code ${response.statusCode} and body ${JSON.stringify(response.body)}`);
+        throw new Error(`Couldn't update TXT record "${recordName}" to zone ${zoneName}`);
+    }
+    console.log(`Update TXT record "${recordName}" finished successfully.`);
+};
+
+/**
  * Delete single TXT record from zone.
  * @param zoneName zone name
  * @param payload challenge data
@@ -177,9 +225,11 @@ const setChallenge = async (payload, userInfo) => {
     domain = domain.replace('*.', '');
     record = await getTxtRecord(domain, payload, userInfo);
     if (record.length !== 0) {
-        await removeTxtRecord(domain, payload, userInfo);
+        //await removeTxtRecord(domain, payload, userInfo);
+        await updateTxtRecord(domain, payload, userInfo);
+    } else {
+        await addTxtRecord(domain, payload, userInfo);
     }
-    await addTxtRecord(domain, payload, userInfo);
     console.log(`Add challenge for domain ${domain} finished.`);
 };
 
