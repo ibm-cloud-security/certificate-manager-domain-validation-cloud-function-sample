@@ -41,13 +41,17 @@ const getPublicKey = async (body, certificateManagerApiUrl) => {
  * @returns {Promise<void>}
  */
 const addTxtRecord = async (domain, payload, userInfo) => {
-    const recordName = payload.challenge.txt_record_name;
+    const domainParts = domain.split(".");
+    const domainPrefix = domainParts.slice(0, (domainParts.length - 2)).join(".");
+    const domainSuffix = domainParts.slice(-2).join(".");
+    const recordName = payload.challenge.txt_record_name + (domainPrefix === "" ? "" : ("." + domainPrefix)); //_acme_challenge or _acme_challenge.[subdomain] if available
     const recordValue = payload.challenge.txt_record_val;
-    console.log(`Add TXT record with name "${recordName}" and value "${recordValue}" to ${domain} (final URL: ${godaddyBaseUrl}/domains/${domain}/records/TXT)`);
+    const url = `${godaddyBaseUrl}/domains/${domainSuffix}/records/TXT/${encodeURIComponent(recordName)}`;
+    console.log(`Add TXT record with name "${recordName}" and value "${recordValue}" to ${domainSuffix} (final URL: ${url})`);
     
     const options = {
         method: 'PUT',
-        uri: `${godaddyBaseUrl}/domains/${domain}/records/TXT/${recordName}`,
+        uri: url,
         headers: {
             'Authorization': "sso-key " + userInfo.godaddyKey + ":" + userInfo.godaddySecret,
             'Content-Type': 'application/json'
